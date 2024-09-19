@@ -18,11 +18,8 @@ The first three rows of the dataset is shown below:
 
 ```py
 reviews = pd.read_csv("/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/tripadvisor_hotel_reviews.csv")
-
 print(reviews.head())
 ```
-
-ok how about now
 
 ## Exploratory Data Analysis
 
