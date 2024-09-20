@@ -117,7 +117,9 @@ frequency_dist = FreqDist(tokenized_all_words)
 reviews["fdist"] = reviews["tokenized"].apply(lambda text: " ".join([word for word in text if frequency_dist[word] > 1]))
 ```
 
-==Words that rarely appear may be less informative or relevant to the overall sentiment of the reviews. Filtering out these words reduces noise.==
+Words that rarely appear may be less informative or relevant to the overall sentiment of the reviews. Filtering out these words reduces noise.
+
+#### Lemmatizer
 
 **Step 4:** Create an instance of a word net lemmatizer and use apply function to tokenized frequency distribution column to transform all words to their base form. 
 
@@ -127,5 +129,40 @@ reviews["fdist_tokenized"] = reviews["fdist"].apply(nltk.word_tokenize)
 reviews["lemmatized"] = reviews["fdist_tokenized"].apply(lambda tokens: " ".join(wordnet_lem.lemmatize(token) for token in tokens))
 ```
 
-Next, I check if each column are equal to each other to ensure that the function actually worked. If
+Next, I check if each column are equal to each other to ensure that the function actually worked.
 
+```py
+reviews["is_equal"] = (reviews["fdist"] == reviews["lemmatized"])
+print(reviews["is_equal"] = (reviews["fdist"] == reviews["lemmatized"])
+)
+```
+
+| Value  | Count |
+|--------|-------|
+| False  | 19921 |
+| True   | 570   |
+
+The table shows that 19,921 reviews are able to be lemmatized. In other words, these reviews contain words that are not in their base form.
+
+#### Word Cloud
+
+**Step 5:** In this section, I put all lemmatized reviews in a single string and store it in `all_words_lem` in order to generate a word cloud of the most frequently used words.
+
+```py
+all_words_lem = " ".join([word for word in reviews["lemmatized"]])
+
+%matplotlib inline
+default_font_path = "/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/dejavu-sans/DejaVuSans.ttf"
+
+wordcloud = WordCloud(max_font_size = 100,
+                      max_words = 100,
+                      random_state = 2,
+                      background_color = "white").generate(all_words_lem)
+
+plt.figure()
+plt.imshow(wordcloud, interpolation = "bilinear")
+plt.axis("off")
+plt.show()
+```
+
+## Sentiment Intensity Analyzer
