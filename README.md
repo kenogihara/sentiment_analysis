@@ -1,5 +1,7 @@
 # Trip Advisor Sentiment Analysis
 
+![Trip Advisor](tripadvisor-logo-circle-owl-icon-black-green-858x858)
+
 By Ken Ogihara
 
 ## Introduction
@@ -14,16 +16,17 @@ This dataset contains 2 columns:
 | Review      | Customer review represented as a string        |
 | Rating      | Customer's rating of the hotel, on a 1-5 scale.      |
 
-The first three rows of the dataset is shown below:
+The first two rows of the dataset is shown below:
 
 ```py
 reviews = pd.read_csv("/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/tripadvisor_hotel_reviews.csv")
-print(reviews.head())
+print(reviews.head(2))
 ```
-| Review                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Rating |
-|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------:|
-| Nice hotel, but expensive parking. Got a good deal to stay at the hotel for an anniversary. Arrived late in the evening and took advice from previous reviews to use valet parking. Check-in was quick and easy. A little disappointed with the non-existent view. The room was clean and of nice size, and the bed was comfortable, although I woke up with a stiff neck from the high pillows. The room was not soundproof, as we heard music from the next room and loud bangs from doors opening and closing. We could also hear people talking in the hallway, which may have been due to noisy neighbors. The Aveda bath products were nice. We didn’t take advantage of the goldfish option since we were staying for a short time. Location was great, within walking distance of shopping. Overall, a nice experience, though paying $40 per night for parking was frustrating. | 4 |
-| Ok, nothing special. As a Hilton Diamond member, I decided to give this chain a shot for my 20th anniversary in Seattle. I booked a suite and paid extra, but what I got was a standard hotel room with a bedroom and bathroom. I showed the printed reservation to the desk, which described amenities like a TV and couch, but the clerk apologized and said they had mixed up the suites on the website. They offered free breakfast as compensation, which was disappointing. Embassy Suites has a real suite, with a sitting room and separate bedroom, unlike what Kimpton calls a suite. During our 5-day stay, they didn’t correct their false advertising. I emailed the hotel with no response. The staff ranged from indifferent to unhelpful. When I asked for breakfast spots, they claimed there were none nearby, but one of Seattle’s best spots was only half a block away! Upon arrival, the bellman was too busy chatting on his phone to help with our bags. The room view was poor, looking out onto an alley and a high-rise building. Housekeeping was decent but unimpressive. Overall, this hotel had super high rates for what felt like a basic business hotel, and there are better chain hotels in Seattle. | 2 |
+| Syntax | Description |
+| ----------- | ----------- |
+| Header | Title |
+| Paragraph | Text |
+
 
 
 ## Exploratory Data Analysis
@@ -37,3 +40,23 @@ Univariate plot that shows the distribution of ratings.
   frameborder="0"
 ></iframe>
 
+## Tokenization
+
+1. **Separate all reviews from texts to words** I used nltk's word_tokenize function to represent each review into words separated by commas.
+
+```py
+reviews["tokenized"] = reviews["Review"].apply(nltk.word_tokenize)
+```
+
+2. **Filter every review by removing stopwords** I used lambda function and nltk's corpus of stopwords and punctuation from the string module to remove words that do not contribute to the sentiment of a review.
+
+```py
+stopwords = nltk.corpus.stopwords.words("english")
+stopwords.extend(["n't", "did"])
+punctuation = set(string.punctuation)
+
+reviews["tokenized"] = reviews["tokenized"].apply(
+    lambda review: [word for word in review if word not in stopwords and word not in punctuation])
+  ```
+
+  
