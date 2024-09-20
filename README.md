@@ -1,6 +1,6 @@
 # Trip Advisor Sentiment Analysis
 
-![Trip Advisor](tripadvisor-logo-circle-owl-icon-black-green-858x858)
+![Trip Advisor](/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png)
 
 By Ken Ogihara
 
@@ -22,11 +22,11 @@ The first two rows of the dataset is shown below:
 reviews = pd.read_csv("/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/tripadvisor_hotel_reviews.csv")
 print(reviews.head(2))
 ```
-| Syntax | Description |
-| ----------- | ----------- |
-| Header | Title |
-| Paragraph | Text |
 
+| Review                                                                                                                         | Rating |
+|--------------------------------------------------------------------------------------------------------------------------------|--------|
+| nice hotel expensive parking got good deal stay hotel anniversary, arrived late evening took advice from previous reviews...    | 4      |
+| ok nothing special charge diamond member hilton decided chain shot 20th anniversary seattle, start booked suite paid extra...   | 2      |
 
 
 ## Exploratory Data Analysis
@@ -59,4 +59,13 @@ reviews["tokenized"] = reviews["tokenized"].apply(
     lambda review: [word for word in review if word not in stopwords and word not in punctuation])
   ```
 
+The dataframe now has a third column that contains the tokenized version:
+
+| Review                                                                                                                                  | Rating | Tokenized                                                                                                                                                                                                                                            |
+|-----------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| nice hotel expensive parking got good deal stay hotel anniversary, arrived late evening took advice from previous reviews did valet...   | 4      | [nice, hotel, expensive, parking, got, good, deal, stay, hotel, anniversary, arrived, late, evening, took, advice, previous, reviews, did, valet]                                                                                                     |
+| ok nothing special charge diamond member hilton decided chain shot 20th anniversary seattle, start booked suite paid extra website...   | 2      | [ok, nothing, special, charge, diamond, member, hilton, decided, chain, shot, 20th, anniversary, seattle, start, booked, suite, paid, extra, website]                                                                                                 |
   
+## Frequency Distribution and Word Cloud
+
+1. Now I want to
