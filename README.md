@@ -1,6 +1,6 @@
 # Trip Advisor Sentiment Analysis
 
-![Trip Advisor](.assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png)
+![Trip Advisor](tripadvisor-logo-circle-owl-icon-black-green-858x858.png)
 
 By Ken Ogihara
 
