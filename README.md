@@ -1,6 +1,6 @@
 # Trip Advisor Sentiment Analysis
 
-![Trip Advisor](tripadvisor-logo-circle-owl-icon-black-green-858x858.png)
+<img src="tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Trip Advisor" width="300"/>
 
 By Ken Ogihara
 
@@ -66,6 +66,28 @@ The dataframe now has a third column that contains the tokenized version:
 | nice hotel expensive parking got good deal stay hotel anniversary, arrived late evening took advice from previous reviews did valet...   | 4      | [nice, hotel, expensive, parking, got, good, deal, stay, hotel, anniversary, arrived, late, evening, took, advice, previous, reviews, did, valet]                                                                                                     |
 | ok nothing special charge diamond member hilton decided chain shot 20th anniversary seattle, start booked suite paid extra website...   | 2      | [ok, nothing, special, charge, diamond, member, hilton, decided, chain, shot, 20th, anniversary, seattle, start, booked, suite, paid, extra, website]                                                                                                 |
   
-## Frequency Distribution and Word Cloud
+## Frequency Distribution, Lemmatizer, and Word Cloud
 
-1. Now I want to
+To analyze a frequency distribution of all words, we must store all the words in one long string. The process is simple:
+
+- **Store all words in a variable called** `all_words`
+
+```py
+all_words = " ".join([word for token_list in reviews["tokenized"] for word in token_list])
+```
+
+- **Tokenize all the words in the string and store it in** `tokenized_all_words`
+
+```py
+tokenized_all_words = nltk.tokenize.word_tokenize(all_words)
+```
+
+- **Create an instance of a frequency distribution from the list of `tokenized_all_words` and apply the instance to the tokenized column using lambda function to filter out all words that occur only once in the entire dataset.**
+
+```py
+frequency_dist = FreqDist(tokenized_all_words)
+
+reviews["fdist"] = reviews["tokenized"].apply(lambda text: " ".join([word for word in text if frequency_dist[word] > 1]))
+```
+
+== Words that rarely appear may be less informative or relevant to the overall sentiment of the reviews. Filtering out these words reduces noise.==
