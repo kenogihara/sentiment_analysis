@@ -1,6 +1,6 @@
 # Trip Advisor Sentiment Analysis
 
-<img src="tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Trip Advisor" width="300"/>
+<img src="tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Trip Advisor" width="200"/>
 
 By Ken Ogihara
 
@@ -8,6 +8,34 @@ By Ken Ogihara
 Hotels play a huge role in the traveling industry. Hotels can make or break a traveler's experience and must allocate their resources efficiently to maintain competition. 
 
 The dataset is taken from Kaggle and contains over 20,000 reviews and their corresponding rating. In this project, I use Natural Language Tool Kit and Sentiment Intensity Analyzer to determine the sentiment behind each hotel review. I cover questions such as, "What specific attributes make a good hotel and a bad one? In what ways could hotels improve their services based on customer reviews?" Sentiment analysis is a great way for hotels to understand their strengths and weaknesses. It provides a way for not just hotels but also businesses to perfect their strengths and to see where they fall short.
+
+The following are the relevant libraries and packages I will work with throughout the project.
+
+```py
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.probability import FreqDist
+from nltk.stem import WordNetLemmatizer
+import string
+from wordcloud import WordCloud, STOPWORDS
+import seaborn as sns
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.collocations import BigramCollocationFinder
+from nltk.metrics import BigramAssocMeasures
+
+nltk.download([
+    "names",
+    "stopwords",
+    "vader_lexicon",
+    "wordnet",
+    "vader_lexicon",
+])
+```
 
 This dataset contains 2 columns:
 
@@ -27,7 +55,6 @@ print(reviews.head(2))
 |--------------------------------------------------------------------------------------------------------------------------------|--------|
 | nice hotel expensive parking got good deal stay hotel anniversary, arrived late evening took advice from previous reviews...    | 4      |
 | ok nothing special charge diamond member hilton decided chain shot 20th anniversary seattle, start booked suite paid extra...   | 2      |
-
 
 ## Exploratory Data Analysis
 
@@ -70,19 +97,19 @@ The dataframe now has a third column that contains the tokenized version:
 
 To analyze a frequency distribution of all words, we must store all the words in one long string. The process is simple:
 
-- **Store all words in a variable called** `all_words`
+- **Step 1:** Store all words in a variable called, `all_words`.
 
 ```py
 all_words = " ".join([word for token_list in reviews["tokenized"] for word in token_list])
 ```
 
-- **Tokenize all the words in the string and store it in** `tokenized_all_words`
+- **Step 2:** Tokenize all the words in the string and store it in `tokenized_all_words`.
 
 ```py
 tokenized_all_words = nltk.tokenize.word_tokenize(all_words)
 ```
 
-- **Create an instance of a frequency distribution from the list of `tokenized_all_words` and apply the instance to the tokenized column using lambda function to filter out all words that occur only once in the entire dataset.**
+- **Step 3:** Create an instance of a frequency distribution from the list of `tokenized_all_words` and apply the instance to the tokenized column using lambda function to filter out all words that occur only *once* in the entire dataset.
 
 ```py
 frequency_dist = FreqDist(tokenized_all_words)
@@ -90,4 +117,15 @@ frequency_dist = FreqDist(tokenized_all_words)
 reviews["fdist"] = reviews["tokenized"].apply(lambda text: " ".join([word for word in text if frequency_dist[word] > 1]))
 ```
 
-== Words that rarely appear may be less informative or relevant to the overall sentiment of the reviews. Filtering out these words reduces noise.==
+==Words that rarely appear may be less informative or relevant to the overall sentiment of the reviews. Filtering out these words reduces noise.==
+
+**Step 4:** Create an instance of a word net lemmatizer and use apply function to tokenized frequency distribution column to transform all words to their base form. 
+
+```py
+wordnet_lem = WordNetLemmatizer()
+reviews["fdist_tokenized"] = reviews["fdist"].apply(nltk.word_tokenize)
+reviews["lemmatized"] = reviews["fdist_tokenized"].apply(lambda tokens: " ".join(wordnet_lem.lemmatize(token) for token in tokens))
+```
+
+Next, I check if each column are equal to each other to ensure that the function actually worked. If
+
