@@ -1,4 +1,3 @@
-# Trip Advisor Sentiment Analysis
 
 <img src="tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Trip Advisor" width="200"/>
 
@@ -31,7 +30,6 @@ from nltk.metrics import BigramAssocMeasures
 nltk.download([
     "names",
     "stopwords",
-    "vader_lexicon",
     "wordnet",
     "vader_lexicon",
 ])
@@ -146,7 +144,7 @@ The table shows that 19,921 reviews are able to be lemmatized. In other words, t
 
 #### Word Cloud
 
-**Step 5:** In this section, I put all lemmatized reviews in a single string and store it in `all_words_lem` in order to generate a word cloud of the most frequently used words.
+**Step 5:** In this section, I put all lemmatized reviews in a single string called, `all_words_lem` in order to generate a word cloud of the most frequently used words.
 
 ```py
 all_words_lem = " ".join([word for word in reviews["lemmatized"]])
@@ -154,15 +152,20 @@ all_words_lem = " ".join([word for word in reviews["lemmatized"]])
 %matplotlib inline
 default_font_path = "/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/dejavu-sans/DejaVuSans.ttf"
 
-wordcloud = WordCloud(max_font_size = 100,
-                      max_words = 100,
-                      random_state = 2,
-                      background_color = "white").generate(all_words_lem)
+wordcloud = WordCloud(max_font_size = 100, max_words = 100, random_state = 2, background_color = "white").generate(all_words_lem)
 
 plt.figure()
 plt.imshow(wordcloud, interpolation = "bilinear")
 plt.axis("off")
 plt.show()
 ```
+
+<iframe
+  src="assets/word_cloud_all_lem.png"
+  width="700"
+  height="500"
+  frameborder="0"
+></iframe>
+
 
 ## Sentiment Intensity Analyzer
