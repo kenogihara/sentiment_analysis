@@ -148,24 +148,25 @@ The table shows that 19,921 reviews are able to be lemmatized. In other words, t
 
 ```py
 all_words_lem = " ".join([word for word in reviews["lemmatized"]])
+fp = '/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/assets/all_words_lem.txt'
 
-%matplotlib inline
-default_font_path = "/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/dejavu-sans/DejaVuSans.ttf"
+with open(fp, 'w') as file:
+    file.write(all_words_lem)
 
-wordcloud = WordCloud(max_font_size = 100, max_words = 100, random_state = 2, background_color = "white").generate(all_words_lem)
-
-plt.figure()
-plt.imshow(wordcloud, interpolation = "bilinear")
-plt.axis("off")
-plt.show()
+bookreader = sc.gen_stylecloud(
+                          file_path = fp,
+                          size = 1028,                         
+                          icon_name = "fas fa-book-reader",
+                          palette = 'colorbrewer.sequential.Blues_5',
+                          background_color = 'white')
 ```
-
 <iframe
-  src="assets/word_cloud_all_lem.png"
+  src="stylecloud.png"
   width="700"
   height="500"
   frameborder="0"
 ></iframe>
+
 
 
 ## Sentiment Intensity Analyzer
