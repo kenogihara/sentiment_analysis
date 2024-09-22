@@ -91,7 +91,7 @@ The dataframe now has a third column that contains the tokenized version:
 | nice hotel expensive parking got good deal stay hotel anniversary, arrived late evening took advice from previous reviews did valet...   | 4      | [nice, hotel, expensive, parking, got, good, deal, stay, hotel, anniversary, arrived, late, evening, took, advice, previous, reviews, did, valet]                                                                                                     |
 | ok nothing special charge diamond member hilton decided chain shot 20th anniversary seattle, start booked suite paid extra website...   | 2      | [ok, nothing, special, charge, diamond, member, hilton, decided, chain, shot, 20th, anniversary, seattle, start, booked, suite, paid, extra, website]                                                                                                 |
   
-## Frequency Distribution, Lemmatizer, and Word Cloud
+## Frequency Distribution, Lemmatizer, and Style Cloud
 
 To analyze a frequency distribution of all words, we must store all the words in one long string. The process is simple:
 
@@ -142,9 +142,9 @@ print(reviews["is_equal"] = (reviews["fdist"] == reviews["lemmatized"])
 
 The table shows that 19,921 reviews are able to be lemmatized. In other words, these reviews contain words that are not in their base form.
 
-#### Word Cloud
+#### Style Cloud
 
-**Step 5:** In this section, I put all lemmatized reviews in a single string called, `all_words_lem` in order to generate a word cloud of the most frequently used words.
+**Step 5:** In this section, I put all lemmatized reviews in a single string called, `all_words_lem` in order to generate a style cloud of the most frequently used words.
 
 ```py
 all_words_lem = " ".join([word for word in reviews["lemmatized"]])
@@ -162,11 +162,21 @@ bookreader = sc.gen_stylecloud(
 ```
 <iframe
   src="stylecloud.png"
+  width="500"
+  height="200"
+  frameborder="0"
+></iframe>
+
+The size of each word shows how common they occur throughout the text. We can see that words like, "hotel", "room", "resort", "people", and "day" are the most used. The following graph shows the top ten most frequently used words in this dataset.
+
+<iframe
+  src="assets/plot2.html"
   width="700"
   height="500"
   frameborder="0"
 ></iframe>
 
-
+As expected, the top ten most frquently used words tend to be the biggest words in the style cloud. However, most of these words like "hotel", "room", "staff", and "stay" are nouns that don't convey much sentiment and are bound to be found in both positive and negative reviews. Therefore, tokenization, frequency distribution, lemmatization, and style cloud themselves are not enough to convey the tone of this dataset. The sentiment of the dataset can 
 
 ## Sentiment Intensity Analyzer
+
