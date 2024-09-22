@@ -155,15 +155,15 @@ with open(fp, 'w') as file:
 
 bookreader = sc.gen_stylecloud(
                           file_path = fp,
-                          size = 1028,                         
+                          size = 800,                         
                           icon_name = "fas fa-book-reader",
                           palette = 'colorbrewer.sequential.Blues_5',
                           background_color = 'white')
 ```
 <iframe
   src="stylecloud.png"
-  width="500"
-  height="200"
+  width="1100"
+  height="500"
   frameborder="0"
 ></iframe>
 
