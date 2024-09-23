@@ -206,4 +206,24 @@ Let's say this number is stored in `sum_sentiment_scores`.
 
 - The sum of the sentiment scores is then normalized by dividing `sum_sentiment_scores` by `sqrt(sum_sentiment_scores**2 + alpha)` where alpha == 15.
 
+For the sake of my analysis, a positive review is one whose compound score is >= 0.05, a negative review is one whose compound score is <= -0.05, and negative otherwise.
+
+```py
+reviews["sentiment"] = reviews["compound"].apply(lambda x: "positive" if x >= 0.05 else "negative" if x <= -0.05 else "neutral")
+
+data = reviews.groupby("sentiment").count().reset_index()
+fig = px.pie(data, names = "sentiment", values = "Review")
+fig.show()
+```
+
+<iframe
+  src="assets/plot3.html"
+  width="700"
+  height="500"
+  frameborder="0"
+></iframe>
+
+I mentioned earlier that common words like "hotel", "resort", "stay" or "night" are frequently used words in both positive *and* negative reviews. Frequency distributions of each group of sentiments will still show similar words:
+
+
 
