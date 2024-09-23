@@ -1,5 +1,4 @@
-
-<img src="tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Trip Advisor" width="200"/>
+![Trip Advisor](assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png)
 
 By Ken Ogihara
 
@@ -223,7 +222,15 @@ fig.show()
   frameborder="0"
 ></iframe>
 
-I mentioned earlier that common words like "hotel", "resort", "stay" or "night" are frequently used words in both positive *and* negative reviews. Frequency distributions of each group of sentiments will still show similar words:
+I mentioned earlier that words like "hotel", "resort", "stay" or "night" are commonly used in both positive *and* negative reviews. Frequency distributions of each group of sentiments will still show similar words:
 
+![Negative Reviews Plot](assets/negative_reviews_plot.png)
 
+![Positive Reviews Plot](assets/positive_reviews_plot.png)
+
+The solution is found by removing common words from each list. In other words, filter out all the words in the most common words found in the negative frequency distribution if that word is also found in the positive frequency distribution and vice versa.
+
+![Pure Negative Reviews Plot](assets/very_neg_plot.png)
+
+![Pure Positive Reviews Plot](assets/very_pos_plot.png)
 
