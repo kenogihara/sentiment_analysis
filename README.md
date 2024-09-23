@@ -35,6 +35,7 @@ nltk.download([
 ])
 ```
 
+
 This dataset contains 2 columns:
 
 | Column Name | Description                                                   |
@@ -155,7 +156,7 @@ with open(fp, 'w') as file:
 
 bookreader = sc.gen_stylecloud(
                           file_path = fp,
-                          size = 800,                         
+                          size = 600,                         
                           icon_name = "fas fa-book-reader",
                           palette = 'colorbrewer.sequential.Blues_5',
                           background_color = 'white')
@@ -167,6 +168,7 @@ bookreader = sc.gen_stylecloud(
   frameborder="0"
 ></iframe>
 
+
 The size of each word shows how common they occur throughout the text. We can see that words like, "hotel", "room", "resort", "people", and "day" are the most used. The following graph shows the top ten most frequently used words in this dataset.
 
 <iframe
@@ -176,7 +178,32 @@ The size of each word shows how common they occur throughout the text. We can se
   frameborder="0"
 ></iframe>
 
-As expected, the top ten most frquently used words tend to be the biggest words in the style cloud. However, most of these words like "hotel", "room", "staff", and "stay" are nouns that don't convey much sentiment and are bound to be found in both positive and negative reviews. Therefore, tokenization, frequency distribution, lemmatization, and style cloud themselves are not enough to convey the tone of this dataset. The sentiment of the dataset can 
+As expected, the top ten most frquently used words tend to be the biggest words in the style cloud. However, words like "hotel", "room", "staff", and "stay" are nouns that don't convey much sentiment. In another words, these words are likely to be found in both positive and negative reviews. Therefore the entire process of using tokenization, lemmatization, and style cloud is insufficient to convey the tone of this dataset. 
 
 ## Sentiment Intensity Analyzer
+
+In this section, I create an instance of a Sentiment Intensity Analyzer from the VADER lexicon and use the `polarity.scores` function to determine the sentiment of each review. 
+
+```py
+analyzer = SentimentIntensityAnalyzer()
+reviews["polarity"] = reviews["lemmatized"].apply(lambda x: analyzer.polarity_scores(x))
+reviews = pd.concat([reviews, reviews["polarity"].apply(pd.Series)], axis = 1)
+print(reviews.head(2)[["Review", "neg", "neu", "pos", "compound"]]
+)
+```
+
+| Review                                                       | neg   | neu   | pos   | compound |
+|---------------------------------------------------------------|-------|-------|-------|----------|
+| nice hotel expensive parking got good deal sta...             | 0.056 | 0.621 | 0.324 | 0.9808   |
+| ok nothing special charge diamond member hilto...             | 0.054 | 0.695 | 0.251 | 0.9946   |
+
+`polarity_scores` outputs the proportion of the text that's negative, positive and neutral, as well as the *compund*, which is a metric that ranges from -1 to +1, where the closer it is to +1 the more positive the sentiment is, and the closer it is to -1 the more negative the sentiment is.
+
+*compound* is calculated from the following steps:
+
+- Summing up all the sentiment scores that VADER lexicon imputes to each word. These scores range from -4 to +4, where +4 is assigned to the most positive word and vice versa.
+Let's say this number is stored in `sum_sentiment_scores`.
+
+- The sum of the sentiment scores is then normalized by dividing `sum_sentiment_scores` by `sqrt(sum_sentiment_scores**2 + alpha)` where alpha == 15.
+
 
