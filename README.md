@@ -1,9 +1,4 @@
-<img 
-  src="assets/Tripadvisor-Logo.png" 
-  width="300" 
-  height="300" 
-  alt="Tripadvisor Logo"
->
+<img src="assets/Tripadvisor-Logo.png" alt="Tripadvisor Logo" width="300" height="300">
 
 # Trip Advisor Sentiment Analysis
 By Ken Ogihara
