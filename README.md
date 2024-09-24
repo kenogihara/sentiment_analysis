@@ -154,14 +154,15 @@ with open(fp, 'w') as file:
     file.write(all_words_lem)
 
 bookreader = sc.gen_stylecloud(
-                          file_path = fp,
-                          size = 600,                         
-                          icon_name = "fas fa-book-reader",
-                          palette = 'colorbrewer.sequential.Blues_5',
-                          background_color = 'white')
+    file_path = fp,
+    size = 600,
+    icon_name = "fas fa-book-reader",
+    palette = 'colorbrewer.sequential.Blues_5',
+    background_color = 'white',
+    output_name = '/Users/kenogihara/Desktop/ALL_PROJECTS/sentiment_analysis/assets/all_words_lem.png')
 ```
 <iframe
-  src="stylecloud.png"
+  src="assets/all_words_lem.png"
   width="1100"
   height="500"
   frameborder="0"
@@ -228,9 +229,15 @@ I mentioned earlier that words like "hotel", "resort", "stay" or "night" are com
 
 ![Positive Reviews Plot](assets/positive_reviews_plot.png)
 
-The solution is found by removing common words from each list. In other words, filter out all the words in the most common words found in the negative frequency distribution if that word is also found in the positive frequency distribution and vice versa.
+The solution is found by removing common words from each list. In other words, filter out all the words in the most common words found in the negative frequency distribution if that word is *also* found in the positive frequency distribution and vice versa.
 
 ![Pure Negative Reviews Plot](assets/very_neg_plot.png)
 
 ![Pure Positive Reviews Plot](assets/very_pos_plot.png)
+
+Notice the words in each graph. For the negative reviews, the most common words are "korral", "comte", "surveillance", etc...
+
+For the positive reviews, most frequently used words are "superb", "wave". "beautifully", "immaculate", etc...
+
+It is important to note that these words don't really encapsulate ways in which hotels can improve upon their services. After all, what can a hotel do about "korral" or "surveillance"? What exactly about the surveillance causes such negative sentiment towards the hotel?
 
