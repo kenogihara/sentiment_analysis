@@ -1,9 +1,9 @@
-<iframe
-  src="assets/Tripadvisor-Logo.png"
-  width= "1000"
-  height="300"
-  frameborder="0"
-></iframe>
+<img 
+  src="assets/Tripadvisor-Logo.png" 
+  width="300" 
+  height="300" 
+  alt="Tripadvisor Logo"
+>
 
 # Trip Advisor Sentiment Analysis
 By Ken Ogihara
