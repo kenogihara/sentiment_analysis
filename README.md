@@ -1,14 +1,12 @@
-## Trip Advisor Sentiment Analysis
-
 <iframe
-  src="assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png"
-  width= "20%"
-  height="auto"
+  src="assets/Tripadvisor-Logo.png"
+  width= "500"
+  height="200"
   frameborder="0"
 ></iframe>
 
 By Ken Ogihara
-
+# Trip Advisor Sentiment Analysis
 ## Introduction
 Hotels play a huge role in the traveling industry. Hotels can make or break a traveler's experience and must allocate their resources efficiently to maintain competition. 
 
