@@ -1,4 +1,11 @@
-![Trip Advisor](assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png)
+# Trip Advisor Sentiment Analysis
+
+<iframe
+  src="assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png"
+  width="400"
+  height="300"
+  frameborder="0"
+></iframe>
 
 By Ken Ogihara
 
@@ -206,6 +213,20 @@ Let's say this number is stored in `sum_sentiment_scores`.
 
 - The sum of the sentiment scores is then normalized by dividing `sum_sentiment_scores` by `sqrt(sum_sentiment_scores**2 + alpha)` where alpha == 15.
 
+<iframe
+  src="assets/plot3.html"
+  width="700"
+  height="500"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/plot4.html"
+  width="700"
+  height="500"
+  frameborder="0"
+></iframe>
+
 For the sake of my analysis, a positive review is one whose compound score is >= 0.05, a negative review is one whose compound score is <= -0.05, and negative otherwise.
 
 ```py
@@ -217,7 +238,7 @@ fig.show()
 ```
 
 <iframe
-  src="assets/plot3.html"
+  src="assets/plot5.html"
   width="700"
   height="500"
   frameborder="0"
@@ -239,5 +260,58 @@ Notice the words in each graph. For the negative reviews, the most common words 
 
 For the positive reviews, most frequently used words are "superb", "wave". "beautifully", "immaculate", etc...
 
-It is important to note that these words don't really encapsulate ways in which hotels can improve upon their services. After all, what can a hotel do about "korral" or "surveillance"? What exactly about the surveillance causes such negative sentiment towards the hotel?
+It is important to note that these words don't really encapsulate ways in which hotels can improve upon their services. After all, what can a hotel do about "korral" or "surveillance"? What exactly about the surveillance causes such negative sentiment towards the hotel? We cannot determine specific ways to improve hotel services if we do not understand the context of the reviews that contain words such as "surveillance."
 
+### Concordance
+
+NLTK's **concordance** function shows the context of a specified word within the text. For example, I'd have a better understanding of people's bad experiences at hotels if I use the keyword, "bad". This is what I will do in this section.
+
+**Step 1:** I first define `get_concordance_text` function that has two parameters: `text_blob` and `word`. It returns a string that contains every occurrence of the keyword and its context. The function is shown below:
+
+```py
+def get_concordance_text(text_blob, word):
+    output = ""
+    concordance_list = text_blob.concordance_list(word, lines = None)
+    for i in range(len(concordance_list)):
+        # We use 4 and 6 here because these entries contain the context of the keyword represented as a string.
+        for j in range(4, 6):
+            output += " " + concordance_list[i][j]
+    return output
+```
+
+**Step 2:** Create a list of keywords and use my `get_concordance_text` function to find all the context of every occurence of each keyword.
+
+```py
+pos_text_blob = nltk.Text(pos_words)
+keywords = ["good", "awesome", "wonderful", "beautiful", "great"]
+pos_text_with_keywords = " ".join([get_concordance_text(pos_text_blob, word) for word in keywords])
+
+neg_text_blob = nltk.Text(neg_words)
+keywords = ["bad", "terrible", "horrible", "horrendous", "poor", "unsatisfied"]
+neg_text_with_keywords = " ".join([get_concordance_text(neg_text_blob, word) for word in keywords])
+```
+
+Here is the stylecloud for positive and negative statements after we have filtered out common words:
+
+<iframe
+  src="assets/pos_text_with_keywords.png"
+  width="1100"
+  height="500"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/neg_text_with_keywords.png"
+  width="1100"
+  height="500"
+  frameborder="0"
+></iframe>
+
+## Conclusion
+
+After I eliminated common words like "hotel", "room", or "day", I have a better understanding of what words or experiences are associated with
+positive reviews and negative reviews.
+
+For example, applying concordance on positive words shows that people like the location, food, beach, restaurant, staff, bed, and pool. Applying concordance on negative words, on the other hand, shows that people
+have a negative sentiment toward food, service, staff, cleanliness, breakfast, smell, quality, noise, and bathroom. This gives insight into what hotels
+should be working on to satisfy their customers.
