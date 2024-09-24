@@ -2,8 +2,8 @@
 
 <iframe
   src="assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png"
-  width="400"
-  height="300"
+  width="800"
+  height="500"
   frameborder="0"
 ></iframe>
 
@@ -220,13 +220,6 @@ Let's say this number is stored in `sum_sentiment_scores`.
   frameborder="0"
 ></iframe>
 
-<iframe
-  src="assets/plot4.html"
-  width="700"
-  height="500"
-  frameborder="0"
-></iframe>
-
 For the sake of my analysis, a positive review is one whose compound score is >= 0.05, a negative review is one whose compound score is <= -0.05, and negative otherwise.
 
 ```py
@@ -236,6 +229,12 @@ data = reviews.groupby("sentiment").count().reset_index()
 fig = px.pie(data, names = "sentiment", values = "Review")
 fig.show()
 ```
+<iframe
+  src="assets/plot4.html"
+  width="700"
+  height="500"
+  frameborder="0"
+></iframe>
 
 <iframe
   src="assets/plot5.html"
