@@ -1,4 +1,4 @@
-<img src="tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Tripadvisor Logo" width="300" height="300">
+<img src="assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png" alt="Tripadvisor Logo" width="300" height="300">
 
 # Trip Advisor Sentiment Analysis
 By Ken Ogihara
