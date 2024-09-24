@@ -1,9 +1,9 @@
-# Trip Advisor Sentiment Analysis
+## Trip Advisor Sentiment Analysis
 
 <iframe
   src="assets/tripadvisor-logo-circle-owl-icon-black-green-858x858.png"
-  width="800"
-  height="500"
+  width= "20%"
+  height="auto"
   frameborder="0"
 ></iframe>
 
