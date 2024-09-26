@@ -4,7 +4,7 @@
 By Ken Ogihara
 
 ## Introduction
-Hotels play a huge role in the traveling industry. Hotels can make or break a traveler's experience and must allocate their resources efficiently to maintain competition. 
+Hotels play a huge role in the traveling industry. It's important for hotels to understand their strengths and weaknesses for continual improvement in satisfying their customers.
 
 The dataset is taken from Kaggle and contains over 20,000 reviews and their corresponding rating. In this project, I use Natural Language Tool Kit and Sentiment Intensity Analyzer to determine the sentiment behind each hotel review. I cover questions such as, "What specific attributes make a good hotel and a bad one? In what ways could hotels improve their services based on customer reviews?" Sentiment analysis is a great way for hotels to understand their strengths and weaknesses. It provides a way for not just hotels but also businesses to perfect their strengths and to see where they fall short.
 
@@ -15,17 +15,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
-import plotly.graph_objects as go
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from nltk.stem import WordNetLemmatizer
 import string
-from wordcloud import WordCloud, STOPWORDS
+import stylecloud as sc
 import seaborn as sns
 from nltk.sentiment import SentimentIntensityAnalyzer
-from nltk.collocations import BigramCollocationFinder
-from nltk.metrics import BigramAssocMeasures
 
 nltk.download([
     "names",
@@ -41,7 +38,7 @@ This dataset contains 2 columns:
 | Column Name | Description                                                   |
 |-------------|---------------------------------------------------------------|
 | Review      | Customer review represented as a string        |
-| Rating      | Customer's rating of the hotel, on a 1-5 scale.      |
+| Rating      | Customer's rating of the hotel, on a scale from 1-5.      |
 
 The first two rows of the dataset is shown below:
 
@@ -68,13 +65,13 @@ Univariate plot that shows the distribution of ratings.
 
 ## Tokenization
 
-1. **Separate all reviews from texts to words** I used nltk's word_tokenize function to represent each review into words separated by commas.
+**Separate all reviews from texts to words:** I used nltk's `word_tokenize` function to represent each review into words separated by commas.
 
 ```py
 reviews["tokenized"] = reviews["Review"].apply(nltk.word_tokenize)
 ```
 
-2. **Filter every review by removing stopwords** I used lambda function and nltk's corpus of stopwords and punctuation from the string module to remove words that do not contribute to the sentiment of a review.
+**Filter every review by removing stopwords:** I used lambda function and nltk's corpus of stopwords and punctuation from the string module to remove words that do not contribute to the sentiment of a review.
 
 ```py
 stopwords = nltk.corpus.stopwords.words("english")
@@ -112,13 +109,12 @@ tokenized_all_words = nltk.tokenize.word_tokenize(all_words)
 
 ```py
 frequency_dist = FreqDist(tokenized_all_words)
-
 reviews["fdist"] = reviews["tokenized"].apply(lambda text: " ".join([word for word in text if frequency_dist[word] > 1]))
 ```
 
 Words that rarely appear may be less informative or relevant to the overall sentiment of the reviews. Filtering out these words reduces noise.
 
-#### Lemmatizer
+### Lemmatizer
 
 **Step 4:** Create an instance of a word net lemmatizer and use apply function to tokenized frequency distribution column to transform all words to their base form. 
 
@@ -143,7 +139,7 @@ print(reviews["is_equal"] = (reviews["fdist"] == reviews["lemmatized"])
 
 The table shows that 19,921 reviews are able to be lemmatized. In other words, these reviews contain words that are not in their base form.
 
-#### Style Cloud
+### Style Cloud
 
 **Step 5:** In this section, I put all lemmatized reviews in a single string called, `all_words_lem` in order to generate a style cloud of the most frequently used words.
 
@@ -175,11 +171,11 @@ The size of each word shows how common they occur throughout the text. We can se
 <iframe
   src="assets/plot2.html"
   width="700"
-  height="500"
+  height="400"
   frameborder="0"
 ></iframe>
 
-As expected, the top ten most frquently used words tend to be the biggest words in the style cloud. However, words like "hotel", "room", "staff", and "stay" are nouns that don't convey much sentiment. In another words, these words are likely to be found in both positive and negative reviews. Therefore the entire process of using tokenization, lemmatization, and style cloud is insufficient to convey the tone of this dataset. 
+As expected, the top ten most frquently used words tend to be the biggest words in the style cloud. However, words like "hotel", "room", "staff", and "stay" are nouns that don't convey much sentiment. In another words, these words are likely to be found in both positive and negative reviews. Therefore the entire process of using tokenization, lemmatization, and style cloud is *insufficient* to convey the tone of this dataset. 
 
 ## Sentiment Intensity Analyzer
 
@@ -198,7 +194,7 @@ print(reviews.head(2)[["Review", "neg", "neu", "pos", "compound"]]
 | nice hotel expensive parking got good deal sta...             | 0.056 | 0.621 | 0.324 | 0.9808   |
 | ok nothing special charge diamond member hilto...             | 0.054 | 0.695 | 0.251 | 0.9946   |
 
-`polarity_scores` outputs the proportion of the text that's negative, positive and neutral, as well as the *compund*, which is a metric that ranges from -1 to +1, where the closer it is to +1 the more positive the sentiment is, and the closer it is to -1 the more negative the sentiment is.
+`polarity_scores` outputs the **proportion** of the review that's negative, positive and neutral, as well as the *compund*, which is a metric that ranges from -1 to +1, where the closer it is to +1 the more positive the sentiment is, and the closer it is to -1 the more negative the sentiment is.
 
 *compound* is calculated from the following steps:
 
@@ -218,10 +214,6 @@ For the sake of my analysis, a positive review is one whose compound score is >=
 
 ```py
 reviews["sentiment"] = reviews["compound"].apply(lambda x: "positive" if x >= 0.05 else "negative" if x <= -0.05 else "neutral")
-
-data = reviews.groupby("sentiment").count().reset_index()
-fig = px.pie(data, names = "sentiment", values = "Review")
-fig.show()
 ```
 <iframe
   src="assets/plot4.html"
@@ -237,7 +229,7 @@ fig.show()
   frameborder="0"
 ></iframe>
 
-I mentioned earlier that words like "hotel", "resort", "stay" or "night" are commonly used in both positive *and* negative reviews. Frequency distributions of each group of sentiments will still show similar words:
+I mentioned earlier that words like "hotel", "resort", "stay" or "night" are commonly used in both positive and negative reviews.  Consequently, frequency distributions of each group of sentiments will still show similar words:
 
 ![Negative Reviews Plot](assets/negative_reviews_plot.png)
 
@@ -251,15 +243,17 @@ The solution is found by removing common words from each list. In other words, f
 
 Notice the words in each graph. For the negative reviews, the most common words are "korral", "comte", "surveillance", etc...
 
-For the positive reviews, most frequently used words are "superb", "wave". "beautifully", "immaculate", etc...
+For the positive reviews, the most frequently used words are "superb", "wave", "beautifully", "immaculate", etc...
 
 It is important to note that these words don't really encapsulate ways in which hotels can improve upon their services. After all, what can a hotel do about "korral" or "surveillance"? What exactly about the surveillance causes such negative sentiment towards the hotel? We cannot determine specific ways to improve hotel services if we do not understand the context of the reviews that contain words such as "surveillance."
 
 ### Concordance
 
-NLTK's **concordance** function shows the context of a specified word within the text. For example, I'd have a better understanding of people's bad experiences at hotels if I use the keyword, "bad". This is what I will do in this section.
+NLTK's **concordance** function shows the context of a specified word within the text. For example, if there was a customer that said, "The waiter was nice but the food was terrible and oversalted", applying the concordance function on the word "terrible" will return the words surrounding "terrible."
 
-**Step 1:** I first define `get_concordance_text` function that has two parameters: `text_blob` and `word`. It returns a string that contains every occurrence of the keyword and its context. The function is shown below:
+Without concordance, I would not know what the customer is talking about. Are they talking about a terrible experience at the pool? Terrible sleeping experience or customer service? This is where the NLTK's concordance function comes in handy.
+
+**Step 1:** I first define `get_concordance_text` function that has two parameters: `text_blob` and `word`. It returns a string that contains every occurrence of the keyword and its context, but *excluding* the word itself. Why? The point of concordance is to determine the context of a commonly used word, which is more meaningful (in this case) than knowing the common word itself. The function is shown below:
 
 ```py
 def get_concordance_text(text_blob, word):
@@ -308,3 +302,6 @@ positive reviews and negative reviews.
 For example, applying concordance on positive words shows that people like the location, food, beach, restaurant, staff, bed, and pool. Applying concordance on negative words, on the other hand, shows that people
 have a negative sentiment toward food, service, staff, cleanliness, breakfast, smell, quality, noise, and bathroom. This gives insight into what hotels
 should be working on to satisfy their customers.
+
+For more details on this project visit [my repository](https://github.com/kenogihara/sentiment_analysis)
+
